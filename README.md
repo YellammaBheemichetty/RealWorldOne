@@ -10,10 +10,10 @@
 
 To run the backend, run:
 
-virtualenv env
-source env/bin/activate
-pip install -r requirements.txt
-python manage.py runserver
+1. virtualenv env
+2. source env/bin/activate
+3. pip install -r requirements.txt
+4. python manage.py runserver
 
 To send/Receive messages:
 
