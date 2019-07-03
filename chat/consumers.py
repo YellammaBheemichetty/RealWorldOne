@@ -1,14 +1,16 @@
-from django.contrib.auth import get_user_model
 from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
 import json
+
+from django.contrib.auth.models import User
+
 from .models import Message
 
-User = get_user_model()
+import paralleldots
+paralleldots.set_api_key("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
 
 
 class ChatConsumer(WebsocketConsumer):
-
     def fetch_messages(self, data):
         messages = Message.last_10_messages()
         content = {
@@ -20,12 +22,16 @@ class ChatConsumer(WebsocketConsumer):
     def new_message(self, data):
         author = data['from']
         author_user = User.objects.filter(username=author)[0]
+        lang_code = "en"
         message = Message.objects.create(
             author=author_user,
             content=data['message'])
+        response = paralleldots.sentiment(message, lang_code)
         content = {
             'command': 'new_message',
-            'message': self.message_to_json(message)
+            'message': self.message_to_json(message),
+            'response': response,
+
         }
         return self.send_chat_message(content)
 
@@ -67,11 +73,15 @@ class ChatConsumer(WebsocketConsumer):
         self.commands[data['command']](self, data)
 
     def send_chat_message(self, message):
+        lang_code = "en"
+        response = paralleldots.sentiment(message, lang_code)
+
         async_to_sync(self.channel_layer.group_send)(
             self.room_group_name,
             {
                 'type': 'chat_message',
-                'message': message
+                'message': message,
+                'response': response,
             }
         )
 
@@ -79,5 +89,6 @@ class ChatConsumer(WebsocketConsumer):
         self.send(text_data=json.dumps(message))
 
     def chat_message(self, event):
+
         message = event['message']
         self.send(text_data=json.dumps(message))
