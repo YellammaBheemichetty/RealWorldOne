@@ -29,7 +29,7 @@ body {
 #frame #sidepanel {
   float: left;
   min-width: 280px;
-  max-width: 340px;
+  max-width: 180px;
   width: 40%;
   height: 100%;
   background: #2c3e50;
@@ -507,7 +507,7 @@ body {
 }
 @media screen and (min-width: 900px) {
   #frame .content {
-    width: calc(100% - 340px);
+    width: calc(100% - 180px);
   }
 }
 #frame .content .contact-profile {

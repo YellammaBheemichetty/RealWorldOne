@@ -8,7 +8,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'Security Key goes here'
+SECRET_KEY = '9nneu#^7_aai*(#(6_qiihu-^k-+%a86&vjh=_i9#(c4^8s51n'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -19,14 +19,20 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
     'channels',
-    'chat'
+    'chat',
+
 ]
 
 MIDDLEWARE = [
@@ -57,8 +63,14 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'SimpleChatProject.wsgi.application'
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
 
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
+
+
+WSGI_APPLICATION = 'SimpleChatProject.wsgi.application'
 ASGI_APPLICATION = "SimpleChatProject.routing.application"
 
 CHANNEL_LAYERS = {
@@ -79,7 +91,6 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
@@ -119,5 +130,10 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static')
+    os.path.join(BASE_DIR, 'static'),
 ]
+
+LOGIN_REDIRECT_URL = '/chat/'
+
+
+SITE_ID = 1
