@@ -45,7 +45,7 @@ nodeenv==1.3.3
 oauthlib==2.1.0
 Paginator==0.5.1
 ParallelDots==3.2.13
-Pillow==6.2.0
+Pillow==8.2.0
 pipenv==2018.11.26
 psycopg2-binary==2.7.5
 pycparser==2.19
